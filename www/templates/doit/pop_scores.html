@@ -1,0 +1,71 @@
+{% extends "doit/pop.html" %}
+
+{% comment %}
+Copyright (c) 2011 Massachusetts Institute of Technology
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+{% endcomment %}
+
+{% block navlink-scores %}<span class="link-here">Scores</span>{% endblock navlink-scores %}
+
+{% block content %}
+<div>
+  <div style="margin:1em;">
+    Scoring breakdown for best matches to <span style="font-weight:bold;font-size:12pt;">{{ attr_name }}</span>
+  </div>
+  <table class="spreadsheetish">
+    <tr>
+      <td></td>
+      {% for match in matches|slice:":4" %}
+      <td class="header">{{ match.name }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td class="header">Synonyms</td>
+      {% for match in matches|slice:":4" %}
+      <td>{{ match.qgrams|default:0|floatformat:3 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td class="header">N-grams</td>
+      {% for match in matches|slice:":4" %}
+      <td>{{ match.ngrams|default:"0"|floatformat:3 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td class="header">MDL</td>
+      {% for match in matches|slice:":4" %}
+      <td>{{ match.mdl|default:"0"|floatformat:3 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td class="header">T-test</td>
+      {% for match in matches|slice:":4" %}
+      <td>{{ match.dist|default:"0"|floatformat:3 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td class="header">Composite</td>
+      {% for match in matches|slice:":4" %}
+      <td>{{ match.cscore|default:"0"|floatformat:3 }}</td>
+      {% endfor %}
+    </tr>
+  </table>
+</div>
+
+{% endblock content %}

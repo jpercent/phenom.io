@@ -1,0 +1,70 @@
+{% extends "doit/pop_values.html" %}
+
+{% comment %}
+Copyright (c) 2011 Massachusetts Institute of Technology
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+{% endcomment %}
+
+{% block subnav-distro %}<span class="link-here">Distributions</span>{% endblock subnav-distro %}
+
+{% block info %}
+{% if histos.0.buckets %}
+<table style="padding:1em;">
+  <tr>
+    <td style="border-right:1px solid #808080;">
+      <div style="font-weight:bold;">{{ histos.0.name }}</div>
+      <div id="main-histo" class="histo-squat"></div>
+      <script type="text/javascript">
+	add_histo("#main-histo", {{ histos.0.buckets }}, {{ histos.0.min|floatformat:2 }}, {{ histos.0.max|floatformat:2 }});
+      </script>
+    </td>
+    <td>
+      <table style="border-collapse:collapse;">
+	<tr>
+	  {% for histo in histos %}
+	  {% if forloop.counter == 4 %}
+	</tr>
+	<tr>
+	  {% endif %}
+	  {% if not forloop.first %}
+	  <td style="border-right:1px solid #808080;">
+	    {% if histo.buckets %}
+	    <div style="font-weight:bold;">{{ histo.name }}</div>
+	    <div id="histo-{{ forloop.counter0 }}" class="histo-squat"></div>
+	    <script type="text/javascript">
+	      add_histo("#histo-{{ forloop.counter0 }}", {{ histo.buckets }}, {{ histo.min|floatformat:2 }}, {{ histo.max|floatformat:2 }});
+	    </script>
+	    {% else %}
+	    <div style="width:250px;height:160px;">{{ histo.name }} is not suitable for distribution analysis.</div>
+	    {% endif %}
+	  </td>
+	  {% endif %}
+	  {% endfor %}
+	</tr>
+      </table>
+    </td>
+  </tr>
+</table>
+{% else %}
+<div>This field's values are not suitable for distribution analysis.</div>
+{% endif %}
+
+
+{% endblock info %}
+
